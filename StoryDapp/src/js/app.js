@@ -119,7 +119,7 @@ App = {
     // console.log(candidateId)
     App.contracts.Story.deployed().then(function(instance) {
       // return instance.casteVote(candidateId, { from: App.account });
-      return instance.addStoryLine()
+      return instance.addStoryLine();
       // return instance.lineselected();
     }).then(function(result) {
       // Wait for votes to update
@@ -145,7 +145,9 @@ App = {
       }
     })
       App.render()
-    }).catch(function(err) {
+      }).then(function () {
+        return storyInstance.incrementRound();
+      }).catch(function(err) {
       console.error(err);
     });
   },
@@ -193,7 +195,7 @@ TimeOut : function()
           App.endRound()
           //App.showStory()
           App.TimeOut()
-        }, 50000 )
+        }, 30000 )
       })
   });
 

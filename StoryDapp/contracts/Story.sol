@@ -17,7 +17,7 @@ contract Story {
     mapping( address => uint[]) votedInThisRound;
     mapping(uint => string[]) suggestedThisRound;
     mapping(uint => uint) numberOfSuggestions;
-    uint public roundTimer = 50;
+    uint public Round;
  
 
     // Constructor
@@ -34,6 +34,7 @@ contract Story {
         // arrayOfLines[4].line = "Line 4 "; 
         // arrayOfLines[4].voteCount = 0;
         start = now ;
+        Round = 0;
     }
 
     // modifier notVoted()
@@ -41,13 +42,18 @@ contract Story {
     //     require( votedInThisRound[msg.sender]<1 , " Already proposed line ");
     // }
 
+    function incrementRound()
+    public
+    {
+        Round++;
+    }
 
     function casteVote(uint idx) 
     public
     
     {
         // require(votedInThisRound[msg.sender] < 1," Already proposed line ");
-        uint Round = (uint)((now - start)/roundTimer);
+        // uint Round = (uint)((now - start)/roundTimer);
         for (uint i = 0;i<votedInThisRound[msg.sender].length;i++) {
             require(votedInThisRound[msg.sender][i] != Round, "Already voted in this round");
         }
@@ -58,7 +64,7 @@ contract Story {
     function addStoryLine() // add line to story and reset count to zero
     public
     {
-        uint Round = (uint)((now - start)/roundTimer);
+        // uint Round = (uint)((now - start)/roundTimer);
         uint roundPropose = 0;
         uint flag = 0;
         for (uint i = 0;i<numberOfSuggestions[Round];i++)
@@ -82,7 +88,7 @@ contract Story {
     function addNew(string _newExtension) 
     public
     {
-        uint Round = (uint)((now - start)/roundTimer);
+        // uint Round = (uint)((now - start)/roundTimer);
         suggestedThisRound[Round].push(_newExtension);
         arrayOfLines[numberOfSuggestions[Round]].line = _newExtension;
         arrayOfLines[numberOfSuggestions[Round]].voteCount = 0;
