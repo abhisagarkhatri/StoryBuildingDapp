@@ -40,6 +40,7 @@ App = {
 
   render: function() {
     var storyInstance;
+    var num;
     //var loader = $("#loader");
     //var content = $("#content");
     //loader.show();
@@ -57,13 +58,15 @@ App = {
     // Load contract data
     App.contracts.Story.deployed().then(function(instance) {
       storyInstance = instance;
-      return storyInstance;
-    }).then(function( storyInstance ) {
+      // num = App.prin();
+      // return num;
+      return instance.lol().then(function(num) {
+      console.log("reached here " + num);
       var story = $("#Story");
       story.empty();
       var candidatesSelect = $('#candidatesSelect');
       candidatesSelect.empty();
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i < num; i++) {
         storyInstance.arrayOfLines(i).then(function(line) {
           var tline = line[0];
           var voteCount = line[1];
@@ -78,9 +81,20 @@ App = {
       }
       //loader.hide();
       //content.show();
-    }).catch(function(error) {
+    })
+  }).catch(function(error) {
       console.warn(error);
     });
+  },
+
+  prin: function() 
+  {
+    App.contracts.Story.deployed().then(function (instance) {
+      instance.lol().then(function (num) {
+        console.log("blabsjva " + num.toNumber());
+        return num.toNumber();
+      })
+    })
   },
 
   castVote: function() 
@@ -195,7 +209,7 @@ TimeOut : function()
           App.endRound()
           //App.showStory()
           App.TimeOut()
-        }, 30000 )
+        }, 50000 )
       })
   });
 

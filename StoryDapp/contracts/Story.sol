@@ -48,6 +48,13 @@ contract Story {
         Round++;
     }
 
+    function lol()
+    public view
+    returns (uint)
+    {
+        return numberOfSuggestions[Round];
+    }
+
     function casteVote(uint idx) 
     public
     
