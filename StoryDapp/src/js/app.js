@@ -33,6 +33,26 @@ App = {
       // Connect provider to interact with contract
       App.contracts.Story.setProvider(App.web3Provider);
       App.TimeOut();
+
+      App.contracts.Story.deployed().then(function(instance) {
+      storyInstance = instance;
+      return storyInstance;
+    }).then(function( storyInstance ) {
+      var story = $("#finalStory");
+      story.empty();
+      storyInstance.lineCount().then(function(num_lines){
+      console.log("Number of lines",num_lines)
+      for (let i = 0; i < num_lines; i++) {
+        storyInstance.finalStory(i).then(function(line){
+          console.log("finalStory lines",line)
+          var lineTemplate = "<li>" + line + "</li>";
+          story.append("<ul>"+lineTemplate+"</ul>");
+
+        });
+      }
+      })
+  });
+
       return App.render();
     }
     );
@@ -41,11 +61,7 @@ App = {
   render: function() {
     var storyInstance;
     var num;
-    //var loader = $("#loader");
-    //var content = $("#content");
-    //loader.show();
-    //content.hide();
-    // Load account data
+    
     web3.eth.getCoinbase(function(err, account) {
       if (err === null) {
         App.account = account;
@@ -56,6 +72,7 @@ App = {
 
     //-----------modify this ------------
     // Load contract data
+
     App.contracts.Story.deployed().then(function(instance) {
       storyInstance = instance;
       // num = App.prin();
@@ -64,6 +81,7 @@ App = {
       console.log("reached here " + num);
       var story = $("#Story");
       story.empty();
+
       var candidatesSelect = $('#candidatesSelect');
       candidatesSelect.empty();
       for (let i = 0; i < num; i++) {
@@ -79,6 +97,7 @@ App = {
         candidatesSelect.append(candidateOption);
         });
       }
+
       //loader.hide();
       //content.show();
     })
@@ -110,60 +129,103 @@ App = {
     }).catch(function(err) {
       console.error(err);
     });
+
+    App.contracts.Story.deployed().then(function(instance) {
+      storyInstance = instance;
+      return storyInstance;
+    }).then(function( storyInstance ) {
+      var story = $("#finalStory");
+      story.empty();
+      storyInstance.lineCount().then(function(num_lines){
+      console.log("Number of lines",num_lines)
+      for (let i = 0; i < num_lines; i++) {
+        storyInstance.finalStory(i).then(function(line){
+          console.log("finalStory lines",line)
+          var lineTemplate = "<li>" + line + "</li>";
+          story.append("<ul>"+lineTemplate+"</ul>");
+
+        });
+      }
+      })
+  });
+
+
   },
 
   addNew: function () {
+    
     if ($('#newExtension').val().trim().length == 0) {
       return;
     }
+
     var line = $('#newExtension').val();
     App.contracts.Story.deployed().then(function (instance) {
       return instance.addNew(line);
     }).then(function (result) {
       App.render();
-      document.location.reload(true);
+      //document.location.reload(true);
     }).catch(function(err) {
       console.error(err);
     });
+
+    console.log("here");
+
+    App.contracts.Story.deployed().then(function(instance) {
+      storyInstance = instance;
+      return storyInstance;
+    }).then(function( storyInstance ) {
+      var story = $("#finalStory");
+      story.empty();
+      storyInstance.lineCount().then(function(num_lines){
+      console.log("Number of lines",num_lines)
+      for (let i = 0; i < num_lines; i++) {
+        storyInstance.finalStory(i).then(function(line){
+          console.log("finalStory lines",line)
+          var lineTemplate = "<li>" + line + "</li>";
+          story.append("<ul>"+lineTemplate+"</ul>");
+
+        });
+      }
+      })
+  });
+
+
+
+
   },
 
   endRound: function() 
   {
-    // var candidateId = $('#candidatesSelect').val();
-    // console.log(candidateId)
+    
     App.contracts.Story.deployed().then(function(instance) {
-      // return instance.casteVote(candidateId, { from: App.account });
+      console.log("reached in end story");
       return instance.addStoryLine();
-      // return instance.lineselected();
     }).then(function(result) {
-      // Wait for votes to update
-      // console.log("Line to be added",result)
       var story = $("#finalStory");
       story.empty();
+      console.log(result);
       storyInstance.lineCount().then(function(num_lines){
-      // console.log("Number of lines",num_lines)
+       console.log("Number of lines",num_lines)
       for (let i = 0; i < num_lines; i++) {
         storyInstance.finalStory(i).then(function(line){
-          // var tline = line[0];
-          // var voteCount = line[1];
           console.log("finalStory lines",line)
-
-          // Render candidate Result
           var lineTemplate = "<li>" + line + "</li>";
           story.append("<ul>"+lineTemplate+"</ul>");
 
-        //   // Render candidate ballot option
-        // var candidateOption = "<option value='" + i + "' >" + tline + "</ option>"
-        // candidatesSelect.append(candidateOption);
         });
       }
     })
-      App.render()
+       App.render()
+     
+
       }).then(function () {
         return storyInstance.incrementRound();
       }).catch(function(err) {
       console.error(err);
     });
+
+      $('')
+      // App.render();
   },
 
   showStory: function()
@@ -179,17 +241,10 @@ App = {
       console.log("Number of lines",num_lines)
       for (let i = 0; i < num_lines; i++) {
         storyInstance.finalStory(i).then(function(line){
-          // var tline = line[0];
-          // var voteCount = line[1];
           console.log("finalStory lines",line)
-
-          // Render candidate Result
           var lineTemplate = "<li>" + line + "</li>";
           story.append("<ul>"+lineTemplate+"</ul>");
 
-        //   // Render candidate ballot option
-        // var candidateOption = "<option value='" + i + "' >" + tline + "</ option>"
-        // candidatesSelect.append(candidateOption);
         });
       }
       })
@@ -206,7 +261,9 @@ TimeOut : function()
         setTimeout(function()
         {
           console.log("Time:",Math.floor(Date.now()/1000)-(result))
-          App.endRound()
+          console.log("calling endstory");
+          App.endRound();
+
           //App.showStory()
           App.TimeOut()
         }, 50000 )

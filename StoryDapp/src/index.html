@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Story building</title>
-
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
   </head>
@@ -41,8 +41,8 @@
             </table>
 
 
-            <button type="submit" class="btn btn-primary" onClick = "App.endRound(); return false;" >End Round</button>
-            <button type="submit" class="btn btn-primary" onClick = "App.showStory(); return false;" >Show Story</button>
+            <!-- <button type="submit" class="btn btn-primary" onClick = "App.endRound(); return false;" >End Round</button> -->
+            <!-- <button type="submit" class="btn btn-primary" onClick = "App.showStory(); return false;" >Show Story</button> -->
             
 
             <hr/>
@@ -52,10 +52,11 @@
       </div>
     </div>
     
-    <input type="text" id="newExtension" placeholder="Add new Extension" />
-    <button type="button" onclick = "App.addNew();">Add Extension</button>
+    <input type="text" id="newExtension" class = "w3-input" placeholder="Add new Extension" /> <br /> <br />
+    <button type="button" style="float: center;" class="btn btn-primary w3-block" onclick = "App.addNew();">Add Extension</button>
+    <!-- <input type="button" value="Click Me" style="float: right;"> -->
 
-    <button onclick="App.prin();">asjgdhv</button>
+    <!-- <button onclick="App.prin();">asjgdhv</button> -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
